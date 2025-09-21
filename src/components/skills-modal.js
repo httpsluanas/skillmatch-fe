@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
-const SkillsModal = ({ name, skills, type }) => {
+const SkillsModal = ({ employeeName, skills, type }) => {
     return (
         <Dialog>
             <form>
@@ -13,9 +13,15 @@ const SkillsModal = ({ name, skills, type }) => {
                 <DialogContent className="sm:max-w-[650px]">
                     <DialogHeader>
                         <DialogTitle>{type == 'HARD' ? 'Hard' : 'Soft'} Skills</DialogTitle>
-                        <DialogDescription>{name}</DialogDescription>
+                        <DialogDescription>{employeeName}</DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4">varias skills e skills e skills</div>
+                    <div className="grid gap-4">
+                        <ul>
+                            {skills.map(skill => (
+                                <li key={skill.id}>{skill.name}</li>
+                            ))}
+                        </ul>
+                    </div>
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button variant="outline">Fechar</Button>

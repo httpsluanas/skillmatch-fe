@@ -1,50 +1,60 @@
 'use client'
+import { useState, useEffect } from 'react'
 
-import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import ImportModal from '@/components/import-modal'
 import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
+
+import { fetchSkills } from '@/services/skillService'
 
 const SkillsPage = () => {
-    // Simulação de dados
-    const skills = [
-        { id: 1, name: 'Programação', type: 'Hard' },
-        { id: 2, name: 'Comunicação', type: 'Soft' },
-        { id: 3, name: 'Design UI/UX', type: 'Hard' },
-        { id: 4, name: 'Trabalho em equipe', type: 'Soft' }
-    ]
+    const [skills, setSkills] = useState([])
+    const [isFetching, setIsFetching] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        fetchSkills().then(setSkills)
+                   .catch((err) => setError(err.message))
+                   .finally(() => setIsFetching(false))
+    }, [])
 
     return (
         <div className="p-6 space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
+            <div>
                 <h1 className="text-2xl font-bold">Skills</h1>
-                <ImportModal title={'Importar skills'} templateUrl={'/'} />
             </div>
-
-            {/* Tabela */}
             <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Nome</TableHead>
                         <TableHead>Tipo</TableHead>
-                        <TableHead>Ações</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {skills.map((skill) => (
-                        <TableRow key={skill.id}>
-                            <TableCell>{skill.name}</TableCell>
-                            <TableCell>
-                                <Badge>{skill.type}</Badge>
-                            </TableCell>
-                            <TableCell>
-                                <Button variant="destructive" size="sm">
-                                    Excluir
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {isFetching ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                            <TableRow key={i}>
+                                <TableCell>
+                                    <Skeleton className="h-4 w-[120px]" />
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton className="h-6 w-[70px] rounded-full" />
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton className="h-8 w-[80px]" />
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    ) : (
+                        skills.map((skill) => (
+                            <TableRow key={skill.id}>
+                                <TableCell>{skill.name}</TableCell>
+                                <TableCell>
+                                    <Badge>{skill.type}</Badge>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
         </div>

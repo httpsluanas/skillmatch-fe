@@ -1,7 +1,13 @@
+'use client'
+import { useState, useEffect } from 'react'
+
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import AddJobModal from '@/components/add-job-modal'
+import { Skeleton } from '@/components/ui/skeleton'
+
+import { fetchJobs, deleteJob } from '@/services/jobsService'
 
 const labels = {
     OPENED: 'Em aberto',
@@ -10,11 +16,15 @@ const labels = {
 }
 
 const JobsPage = ({}) => {
-    const vagas = [
-        { vaga: 'Senior Software Engineer', departamento: 'Desenvolvimento', status: 'OPENED', skills: [] },
-        { vaga: 'Product Manager', departamento: 'Produto', status: 'FILLED', skills: [] },
-        { vaga: 'UX Designer', departamento: 'Design', status: 'CLOSED', skills: [] }
-    ]
+    const [jobs, setJobs] = useState([])
+    const [isFetching, setIsFetching] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        fetchJobs().then(setJobs)
+                   .catch((err) => setError(err.message))
+                   .finally(() => setIsFetching(false))
+    }, [])
 
     return (
         <div className="p-6 space-y-6">
@@ -27,24 +37,45 @@ const JobsPage = ({}) => {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Vaga</TableHead>
-                        <TableHead>Departamento</TableHead>
                         <TableHead>Skills requeridas</TableHead>
                         <TableHead>Ações</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {vagas.map((item, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{item.vaga}</TableCell>
-                            <TableCell>{item.departamento}</TableCell>
-                            <TableCell>-{/* <Badge variant={item.status == 'OPENED' ? 'outline' : item.status == 'CLOSED' ? 'secondary' : 'default'}>{labels[item.status]}</Badge> */}</TableCell>
-                            <TableCell>
-                                <Button size="sm" variant="outline">
-                                    Visualizar
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {isFetching ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                            <TableRow key={i}>
+                                <TableCell>
+                                    <Skeleton className="h-4 w-[120px]" />
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton className="h-4 w-[120px]" />
+                                </TableCell>
+                            </TableRow>
+                    ))) : (
+                        jobs.map((job, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{job.title}</TableCell>
+                                <TableCell>
+                                    <ul>
+                                        {job.skills.map((skill, index) => (
+                                            <li key={index}>
+                                                {skill.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </TableCell>
+                                <TableCell>
+                                    <Button size="sm" variant="outline">
+                                        Visualizar
+                                    </Button>
+                                    <Button variant="destructive" size="sm" onClick={() => deleteJob(job.id)}>
+                                        Excluir
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
         </div>
