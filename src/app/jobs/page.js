@@ -8,7 +8,7 @@ import AddJobModal from '@/components/add-job-modal'
 import RecommendationsModal from '@/components/recommendations-modal'
 import { Skeleton } from '@/components/ui/skeleton'
 
-import { fetchJobs, deleteJob, fetchRecommendations } from '@/services/jobsService'
+import { fetchJobs, saveJob, deleteJob, fetchRecommendations } from '@/services/jobsService'
 
 const labels = {
     OPENED: 'Em aberto',
@@ -46,7 +46,8 @@ const JobsPage = ({}) => {
         <div className="p-6 space-y-6">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold">Vagas internas</h1>
-                <AddJobModal />
+                <AddJobModal submit={saveJob}
+                             onSuccess={(newJob) => setJobs((prev) => [...prev, newJob])}/>
             </div>
 
             <Table>

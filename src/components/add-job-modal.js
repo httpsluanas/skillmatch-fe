@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -13,8 +13,6 @@ import { Textarea } from '@/components/ui/textarea'
 
 import SkillsSelector from '@/components/skills-selector'
 
-import { saveJob } from '@/services/jobsService'
-
 const FormSchema = z.object({
     title: z.string().min(1, 'Título é obrigatório'),
     description: z.string().min(1, 'Descrição é obrigatória'),
@@ -26,9 +24,7 @@ const FormSchema = z.object({
     ).optional()
 })
 
-const AddJobModal = () => {
-    const inputRef = useRef(null)
-
+const AddJobModal = ({submit, onSuccess}) => {
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -38,12 +34,20 @@ const AddJobModal = () => {
         }
     })
 
-    const onSubmit = (data) => {
-        saveJob(data)
+    const [open, setOpen] = useState(false)
+
+    const onSubmit = async (values) => {
+        try {
+        const newJob = await submit(values)
+            onSuccess?.(newJob)
+            setOpen(false)
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline">Cadastrar nova vaga</Button>
             </DialogTrigger>
