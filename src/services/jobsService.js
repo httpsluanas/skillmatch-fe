@@ -17,3 +17,7 @@ export function deleteJob(jobId) {
         method: 'DELETE',
     })
 }
+
+export function fetchRecommendations(jobId, recommendationType) {
+    return apiFetch(`/jobs/recommendations/${jobId}?recommendationType=${recommendationType}`)
+}

@@ -7,12 +7,12 @@ const SkillsModal = ({ employeeName, skills, type }) => {
             <form>
                 <DialogTrigger asChild>
                     <Button size="sm" variant="link">
-                        + Ver mais
+                        + Ver todas
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[650px]">
                     <DialogHeader>
-                        <DialogTitle>{type == 'HARD' ? 'Hard' : 'Soft'} Skills</DialogTitle>
+                        <DialogTitle>{type == 'HARD' ? 'Hard' : type == 'SOFT' ? 'soft' : ''} Skills</DialogTitle>
                         <DialogDescription>{employeeName}</DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4">

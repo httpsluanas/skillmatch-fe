@@ -5,9 +5,10 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import AddJobModal from '@/components/add-job-modal'
+import RecommendationsModal from '@/components/recommendations-modal'
 import { Skeleton } from '@/components/ui/skeleton'
 
-import { fetchJobs, deleteJob } from '@/services/jobsService'
+import { fetchJobs, deleteJob, fetchRecommendations } from '@/services/jobsService'
 
 const labels = {
     OPENED: 'Em aberto',
@@ -20,11 +21,26 @@ const JobsPage = ({}) => {
     const [isFetching, setIsFetching] = useState(true)
     const [error, setError] = useState(null)
 
+    const [recommendationType, setRecommendationType] = useState()
+
+    const [recommendations, setRecommendations] = useState([])
+    const [isFetchingRecommendations, setIsFetchingRecommendations] = useState(true)
+    const [errorRecommendations, setErrorRecommendations] = useState(null)
+
+    const [jobId, setJobId] = useState(null)
+
     useEffect(() => {
         fetchJobs().then(setJobs)
                    .catch((err) => setError(err.message))
                    .finally(() => setIsFetching(false))
     }, [])
+    useEffect(() => {
+        if (jobId && recommendationType) {
+            fetchRecommendations(jobId, recommendationType).then(setRecommendations)
+                   .catch((err) => setErrorRecommendations(err.message))
+                   .finally(() => setIsFetchingRecommendations(false))
+        }
+    }, [jobId, recommendationType])
 
     return (
         <div className="p-6 space-y-6">
@@ -51,6 +67,9 @@ const JobsPage = ({}) => {
                                 <TableCell>
                                     <Skeleton className="h-4 w-[120px]" />
                                 </TableCell>
+                                <TableCell>
+                                    <Skeleton className="h-4 w-[120px]" />
+                                </TableCell>
                             </TableRow>
                     ))) : (
                         jobs.map((job, index) => (
@@ -66,12 +85,21 @@ const JobsPage = ({}) => {
                                     </ul>
                                 </TableCell>
                                 <TableCell>
-                                    <Button size="sm" variant="outline">
-                                        Visualizar
-                                    </Button>
-                                    <Button variant="destructive" size="sm" onClick={() => deleteJob(job.id)}>
+                                    <RecommendationsModal jobTitle={job.title}
+                                                          requiredSkills={job.skills}
+                                                          handleOpenBtnClick={() => {setJobId(job.id); setRecommendationType('RELEVANCE')}}
+                                                          isLoading={isFetchingRecommendations}
+                                                          modalTitle={'Ver recomendações por relevância'}
+                                                          {...{recommendations, recommendationType}}/>
+                                    <RecommendationsModal jobTitle={job.title}
+                                                          requiredSkills={job.skills}
+                                                          handleOpenBtnClick={() => {setJobId(job.id); setRecommendationType('PROXIMITY')}}
+                                                          isLoading={isFetchingRecommendations}
+                                                          modalTitle={'Ver recomendações por compatibilidade'}
+                                                          {...{recommendations, recommendationType}}/>
+                                    {/* <Button variant="destructive" size="sm" onClick={() => deleteJob(job.id)}>
                                         Excluir
-                                    </Button>
+                                    </Button> */}
                                 </TableCell>
                             </TableRow>
                         ))
