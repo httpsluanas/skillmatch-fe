@@ -5,9 +5,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 
-import SkillsModal from '@/components/skills-modal'
+import SkillsModal from '@/components/SkillsModal'
 
-const RecommendationsModal = ({ jobTitle, recommendations, handleOpenBtnClick, isLoading, requiredSkills, modalTitle }) => {
+const RecommendationsModal = ({ projectTitle, recommendations, handleOpenBtnClick, isLoading, requiredSkills, modalTitle }) => {
     return (
         <Dialog>
             <form>
@@ -19,7 +19,7 @@ const RecommendationsModal = ({ jobTitle, recommendations, handleOpenBtnClick, i
                 <DialogContent className="max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Recomendações</DialogTitle>
-                        <DialogDescription>{jobTitle}</DialogDescription>
+                        <DialogDescription>{projectTitle}</DialogDescription>
                     </DialogHeader>
                     {isLoading ? (
                         <Skeleton/>
@@ -31,6 +31,7 @@ const RecommendationsModal = ({ jobTitle, recommendations, handleOpenBtnClick, i
                                         <TableHead>Nome</TableHead>
                                         <TableHead>Score</TableHead>
                                         <TableHead>Skills compatíveis</TableHead>
+                                        <TableHead>Justificativa</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -39,14 +40,7 @@ const RecommendationsModal = ({ jobTitle, recommendations, handleOpenBtnClick, i
                                             <TableCell>{recommendation.employee.name}</TableCell>
                                             <TableCell>{recommendation.score}</TableCell>
                                             <TableCell>
-                                                <ul>
-                                                    {recommendation.employee.skills.filter(skill => requiredSkills.some(requiredSkill => requiredSkill.id === skill.id)).map(skill => (
-                                                        <li key={`${skill.id}-${skill.name}`}>
-                                                            {skill.name}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <SkillsModal skills={recommendation.employee.skills} employeeName={recommendation.employee.name} type={recommendation.employee.type}/>
+                                                {recommendation.justification}
                                             </TableCell>
                                         </TableRow>
                                     ))}

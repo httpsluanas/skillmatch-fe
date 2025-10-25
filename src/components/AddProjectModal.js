@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
-import SkillsSelector from '@/components/skills-selector'
+import SkillsSelector from '@/components/SkillsSelector'
 
 const FormSchema = z.object({
     title: z.string().min(1, 'Título é obrigatório'),
@@ -24,7 +24,7 @@ const FormSchema = z.object({
     ).optional()
 })
 
-const AddJobModal = ({submit, onSuccess}) => {
+const AddProjectModal = ({submit, onSuccess}) => {
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -38,8 +38,8 @@ const AddJobModal = ({submit, onSuccess}) => {
 
     const onSubmit = async (values) => {
         try {
-        const newJob = await submit(values)
-            onSuccess?.(newJob)
+        const newProject = await submit(values)
+            onSuccess?.(newProject)
             setOpen(false)
         } catch (err) {
             console.error(err)
@@ -49,16 +49,16 @@ const AddJobModal = ({submit, onSuccess}) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">Cadastrar nova vaga</Button>
+                <Button variant="outline">Cadastrar novo projeto</Button>
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[650px]">
                 <DialogHeader>
-                    <DialogTitle>Cadastrar nova vaga</DialogTitle>
+                    <DialogTitle>Cadastrar novo projeto</DialogTitle>
                 </DialogHeader>
 
                 <Form {...form}>
-                    <form id="add-job-form" onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+                    <form id="add-project-form" onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
                         <div role="tabpanel" className='block space-y-4'>
                             <FormField
                                 control={form.control}
@@ -70,7 +70,7 @@ const AddJobModal = ({submit, onSuccess}) => {
                                             <Input
                                                 id="title"
                                                 type="text"
-                                                placeholder="Digite o título da vaga..."
+                                                placeholder="Digite o título do projeto..."
                                                 {...field}
                                             />
                                         </FormControl>
@@ -89,7 +89,7 @@ const AddJobModal = ({submit, onSuccess}) => {
                                             <Textarea
                                                 id="description"
                                                 rows={6}
-                                                placeholder="Descreva as principais responsabilidades, atividades e requisitos da vaga..."
+                                                placeholder="Descreva as principais responsabilidades, atividades e requisitos do projeto..."
                                                 {...field}
                                             />
                                         </FormControl>
@@ -124,7 +124,7 @@ const AddJobModal = ({submit, onSuccess}) => {
                         <DialogClose asChild>
                             <Button variant="outline">Cancelar</Button>
                         </DialogClose>
-                        <Button type="submit" form="add-job-form">
+                        <Button type="submit" form="add-project-form">
                             Finalizar
                         </Button>
                     </div>
@@ -134,4 +134,4 @@ const AddJobModal = ({submit, onSuccess}) => {
     )
 }
 
-export default AddJobModal
+export default AddProjectModal

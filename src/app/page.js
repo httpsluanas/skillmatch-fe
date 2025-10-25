@@ -7,19 +7,19 @@ const HomePage = () => {
     const cards = [
         { title: 'Colaboradores', description: 'Consulte perfis e habilidades dos colaboradores.', icon: Users, href: '/employees' },
         { title: 'Skills', description: 'Gerencie as habilidades disponíveis em sua empresa.', icon: Star, href: '/skills' },
-        { title: 'Vagas', description: 'Crie, visualize e gerencie vagas com facilidade.', icon: Briefcase, href: '/jobs' }
+        { title: 'Projetos', description: 'Crie, visualize e gerencie projetos com facilidade.', icon: Briefcase, href: '/projects' }
     ]
 
     return (
         <div className="max-w-6xl mx-auto p-8">
             <h1 className="text-4xl font-bold text-indigo-600 mb-4">Bem-vindo ao SkillMatch!</h1>
             <p className="text-gray-700 mb-6">
-                O SkillMatch é um sistema inteligente de gestão de vagas e candidatos, pensado para otimizar o processo de seleção dentro da sua empresa. Ele não apenas organiza vagas e perfis de
+                O SkillMatch é um sistema inteligente de gestão de projetos e candidatos, pensado para otimizar o processo de seleção dentro da sua empresa. Ele não apenas organiza projetos e perfis de
                 colaboradores, mas também <strong>analisa as habilidades cadastradas</strong> e <strong>recomenda automaticamente os funcionários mais indicados</strong> para cada posição.
             </p>
             <ul className="list-disc list-inside space-y-2 mb-6 text-gray-700">
                 <li>
-                    <strong>Gestão de Vagas:</strong> crie e gerencie vagas detalhando requisitos e habilidades necessárias;
+                    <strong>Gestão de Projetos:</strong> crie e gerencie projetos detalhando requisitos e habilidades necessárias;
                 </li>
                 <li>
                     <strong>Perfis de Colaboradores:</strong> cadastre e organize as habilidades de cada funcionário, acompanhando sua experiência e competências;
@@ -28,7 +28,7 @@ const HomePage = () => {
                     <strong>Recomendações Automáticas:</strong> receba sugestões de candidatos ideais para cada vaga, com base na compatibilidade entre habilidades do colaborador e exigências da vaga;
                 </li>
                 <li>
-                    <strong>Relatórios e Insights:</strong> acompanhe indicadores de talentos e vagas, ajudando na tomada de decisão estratégica e no planejamento interno.
+                    <strong>Relatórios e Insights:</strong> acompanhe indicadores de talentos e projetos, ajudando na tomada de decisão estratégica e no planejamento interno.
                 </li>
             </ul>
             <p className="text-gray-600 mb-8">

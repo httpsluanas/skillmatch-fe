@@ -42,9 +42,9 @@ const AppSidebar = () => {
 
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild>
-                                    <Link href="/jobs">
+                                    <Link href="/projects">
                                         <Briefcase className="h-4 w-4" />
-                                        <span>Vagas</span>
+                                        <span>Projetos</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 
 import { Skeleton } from '@/components/ui/skeleton'
-import SkillsModal from '@/components/skills-modal'
+import SkillsModal from '@/components/SkillsModal'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 import { fetchEmployees } from '@/services/employeeService'
@@ -48,7 +48,6 @@ const EmployeesPage = () => {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Nome</TableHead>
-                        <TableHead>Cargo</TableHead>
                         <TableHead>Hard Skills</TableHead>
                         <TableHead>Soft Skills</TableHead>
                     </TableRow>
@@ -75,7 +74,6 @@ const EmployeesPage = () => {
                         employees.map((e) => (
                             <TableRow key={e.id}>
                                 <TableCell>{e.name}</TableCell>
-                                <TableCell>{e.job}</TableCell>
                                 <TableCell>
                                     <ul>
                                         {skills[e.id]?.HARD.slice(0, 2).map(skill => (
